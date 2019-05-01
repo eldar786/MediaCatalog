@@ -1,0 +1,68 @@
+server:
+  port: 8090
+  tomcat:
+    uri-encoding: UTF-8
+logging:
+  level:
+
+    org:
+      springframework:
+        security: WARN
+        transaction:
+          interceptor: INFO
+        orm:
+          jpa: INFO
+
+
+spring:
+  application:
+    name: erp-mlm
+  profiles:
+    active: ${active.profiles}
+  jackson:
+    date-format: yyyy-MM-dd'T'HH:mm:ss
+    time-zone: CET
+    serialization:
+      write-dates-with-zone-id: false
+      write-date-keys-as-timestamps: false
+    deserialization:
+      adjust-dates-to-context-time-zone: false
+  datasource:
+    url: jdbc:postgresql://127.0.0.1:5432/erp
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: root
+    tomcat:
+      max-active: 60
+      initial-size: 3
+      max-idle: 6
+      min-idle: 3
+      test-while-idle: true
+      test-on-borrow: true
+      validation-query: SELECT 1
+      time-between-eviction-runs-millis: 5000
+      min-evictable-idle-time-millis: 60000
+      remove-abandoned: true
+      log-abandoned: true
+      remove-abandoned-timeout: 2400
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        default_schema: ${erp-mlm-datasource-default-schema}
+
+  kafka:
+    consumer:
+      #client-id:
+      group-id: erp.mlm
+      auto-offset-reset: earliest
+      enable-auto-commit: true
+      auto-commit-interval: 100
+      #heartbeat-interval: 15000
+
+  jmx:
+    enabled: true
+    default-domain: erp.mlm
